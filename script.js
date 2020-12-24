@@ -25,9 +25,10 @@
     // Define branch list and base branch
     let branches = null;
     let branch = 'master';
+    const repoUrl = window.location.href.split('issues')[0];
 
     // Update branch lists
-    fetch('https://github.com/bumbeishvili/create-branch-from-issue/branches')
+    fetch(`${repoUrl}/branches`)
                     .then(d=>d.text())
                     .then(d=>jQuery(d).find('branch-filter-item'))
                     .then(d=>d.toArray())
@@ -39,7 +40,7 @@
                     })
     // Issue new branch creation command
     function _createSameNamedBranchFromGithubIssue(){
-        const repoUrl = window.location.href.split('issues')[0];
+       
         const issueTitle = document.querySelector('.js-issue-title').innerText;
         const branchTitle = issueTitle.split(' ').filter(d=>d.trim()).map(d=>d.toLowerCase()).join('-');
 
