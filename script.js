@@ -41,7 +41,7 @@
     // Issue new branch creation command
     function _createSameNamedBranchFromGithubIssue(){
        
-        const issueTitle = document.querySelector('.js-issue-title').innerText;
+        const issueTitle = document.querySelector('.js-issue-title').innerText.replace('"','').replace("'","").replace("&","").replace("?","").replace(";","");
         const branchTitle = issueTitle.split(' ').filter(d=>d.trim()).map(d=>d.toLowerCase()).join('-');
 
         fetch(`${repoUrl}refs/${branch}?source_action=disambiguate&source_controller=files`)
