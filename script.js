@@ -33,7 +33,6 @@ function stringToSlug(str) {
 	const $button = document.createElement('div');
 	$button.innerHTML =
 		'<button id="create_branch_button" style="margin-right:10px!important;background-color:#0C61FE" class="d-inline-block float-none m-0 mr-md-0 btn btn-sm btn-primary ">Create Branch From This Issue</button>';
-
 	document.querySelector('.gh-header-actions').prepend($button);
 
 	// Define branch list and base branch
@@ -44,31 +43,27 @@ function stringToSlug(str) {
 	fetch(`${repoUrl}/branches`)
 		.then((d) => d.text())
 		.then((d) => {
-			const $el = document.createElement('div')
-			$el.innerHTML = d
-			branch = $el.querySelector('branch-filter-item').getAttribute('branch')
-		})
+			const $el = document.createElement('div');
+			$el.innerHTML = d;
+			branch = $el.querySelector('branch-filter-item').getAttribute('branch');
+		});
+
+	// Attach event to button
 	// Issue new branch creation command
-	function _createSameNamedBranchFromGithubIssue() {
+	$button.addEventListener('click', (d) => {
 		const issueTitle = document.querySelector('.js-issue-title').innerText;
 		const issueId = window.location.pathname.split('/').pop();
 		const branchTitle = stringToSlug(`issue ${issueId}-${issueTitle}`);
-
 		fetch(`${repoUrl}refs/${branch}?source_action=disambiguate&source_controller=files`)
 			.then((d) => d.text())
 			.then((d) => {
-				const $el = document.createElement('div')
-				$el.innerHTML = d
-				const $form = $el.querySelector('form')
+				const $el = document.createElement('div');
+				$el.innerHTML = d;
+				const $form = $el.querySelector('form');
 				const $name = $form.querySelector('#name');
 				$name.value = branchTitle;
 				document.body.appendChild($form);
-				$form.submit()
-			})
-	}
-
-	// Attach event to button
-	$button.addEventListener('click', (d) => {
-		_createSameNamedBranchFromGithubIssue();
+				$form.submit();
+			});
 	});
 })();
