@@ -63,8 +63,7 @@ function stringToSlug(str) {
 				const $name = $form.querySelector('#name');
 				$name.value = branchTitle;
 				document.body.appendChild($form);
-				debugger;
-				// $form.submit()
+				$form.submit()
 			})
 	}
 
