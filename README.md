@@ -1,4 +1,4 @@
-# Create branch from Github issue
+# Create branch from the Github issue
 
 [Blog - creating branch from issue](https://dev.to/dbumbeishvili/github-create-a-branch-from-issue-4k3h)
 
