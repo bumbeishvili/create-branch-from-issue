@@ -9,6 +9,10 @@
 1. Specify  source branch
 ![](https://user-images.githubusercontent.com/6873202/104959120-eab6cd00-59ea-11eb-8ea4-82e1e522ad0e.gif)
 
+2. Copy branch checkout script
+![checkout](https://user-images.githubusercontent.com/6873202/124886918-bf01c080-dfe5-11eb-81ba-6ee1d8a593d2.gif)
+
+
 
 ## Installation and usage
 
