@@ -3,7 +3,7 @@
 // @name         Github - Create branch from issue
 // @namespace    http://tampermonkey.net/
 // @source       https://github.com/bumbeishvili/create-branch-from-issue
-// @version      0.1
+// @version      0.2
 // @description  Creating same named branch from github issue
 // @match        https://github.com/*
 // @grant        none
@@ -28,7 +28,7 @@ function stringToSlug(str) {
   const $headerActions = document.querySelector('.gh-header-actions');
   if (!$headerActions) return;
   const $loadingIndicator = document.createElement('div');
-  $loadingIndicator.style.flexBasis = 'min-content';
+  $loadingIndicator.classList.add('flex-1');
   $loadingIndicator.innerHTML = `<span id="span-issue-loading-branches" class="mr-1">Loading branches...</span>`;
 
   const $button = document.createElement('div');
@@ -43,8 +43,12 @@ function stringToSlug(str) {
 
   $headerActions.classList.add('flex-content-start', 'flex-justify-end', 'flex-wrap');
   $headerActions.classList.remove('flex-shrink-0');
+  $headerActions.style.minWidth = 'max-content';
 
   $headerActions.prepend($button);
+  const $lineBreaker = document.createElement('div');
+  $lineBreaker.style.flexBasis = '100%';
+  $headerActions.append($lineBreaker);
   $headerActions.append($loadingIndicator);
   // Define branch list and base branch
   const repoUrl = window.location.href.split('issues')[0];
@@ -64,7 +68,7 @@ function stringToSlug(str) {
           })
           const $dropdown = document.createElement('div');
           $dropdown.innerHTML = `<label for="bumbeishvili-source-branch">Source branch:</label>
-            <select id="bumbeishvili-source-branch" class="form-control mr-1" style="max-width: 390px;" id="dropdown-issue-all-branches">
+            <select id="bumbeishvili-source-branch" class="form-control mr-1" style="max-width: 0;min-width:100%;" id="dropdown-issue-all-branches">
                 ${options}
             </select>
           `
@@ -98,7 +102,7 @@ function stringToSlug(str) {
   });
 })();
 
-// Feature: Copy branch checkout command into clipboard 
+// Feature: Copy branch checkout command into clipboard
 (function () {
   console.log(location);
   console.log(window.location.origin + window.location.pathname);
