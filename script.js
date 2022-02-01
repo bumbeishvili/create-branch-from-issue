@@ -25,11 +25,14 @@ function stringToSlug(str) {
 (function () {
   'use strict';
   // If not header actions element presented, return since this is not an issue
-  if (!document.querySelector('.gh-header-actions')) return;
+  const $headerActions = document.querySelector('.gh-header-actions');
+  if (!$headerActions) return;
   const $loadingIndicator = document.createElement('div');
   $loadingIndicator.classList.add('flex-1');
   $loadingIndicator.innerHTML = `<span id="span-issue-loading-branches" class="mr-1">Loading branches...</span>`;
+
   const $button = document.createElement('div');
+  $button.classList.add('flex-grow-0');
   $button.innerHTML =
       '<button id="create_branch_button" style="margin-right:10px!important;background-color:#0C61FE" class="d-inline-block float-none m-0 mr-md-0 btn btn-sm btn-primary ">Create Branch From This Issue</button>';
 
@@ -47,7 +50,6 @@ function stringToSlug(str) {
   $lineBreaker.style.flexBasis = '100%';
   $headerActions.append($lineBreaker);
   $headerActions.append($loadingIndicator);
-
   // Define branch list and base branch
   const repoUrl = window.location.href.split('issues')[0];
   // Update branch lists
@@ -70,7 +72,7 @@ function stringToSlug(str) {
                 ${options}
             </select>
           `
-          document.querySelector('.gh-header-actions').prepend($dropdown); // Adds the branches dropdown into the DOM
+          $loadingIndicator.prepend($dropdown); // Adds the branches dropdown into the DOM
           document.getElementById("span-issue-loading-branches").outerHTML = ""; // Removes the loading indicator from the DOM
       });
   // Attach event to button
