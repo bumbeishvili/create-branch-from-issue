@@ -1,3 +1,6 @@
+[![SWUbanner](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner2-direct.svg)](https://github.com/vshymanskyy/StandWithUkraine/blob/main/docs/README.md)
+
+
 # Create branch from the Github issue
 
 [Blog - creating branch from issue](https://dev.to/dbumbeishvili/github-create-a-branch-from-issue-4k3h)
