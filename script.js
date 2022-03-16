@@ -88,8 +88,6 @@ function stringToSlug(str) {
 
 // Feature: Copy branch checkout command into clipboard 
 (function () {
-  console.log(location);
-  console.log(window.location.origin + window.location.pathname);
   if (
     window.location.href ===
       window.location.origin + window.location.pathname ||
