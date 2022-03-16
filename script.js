@@ -88,8 +88,6 @@ function stringToSlug(str) {
 
 // Feature: Copy branch checkout command into clipboard 
 (function () {
-  console.log(location);
-  console.log(window.location.origin + window.location.pathname);
   if (
     window.location.href ===
       window.location.origin + window.location.pathname ||
@@ -101,37 +99,39 @@ function stringToSlug(str) {
     if (window.location.href.match("/tree/*")) {
       branchId = window.location.href.split("tree")[1].substring(1);
     }
-    const $main = document.querySelector("main");
-    const $commandForm = document.createElement("div");
-    $commandForm.innerHTML = `<div class="float-right pull-right p-3">
-    <input
-      type="text"
-      name="input-checkout-command"
-      value="git fetch && git checkout ${branchId}"
-      class="form-control d-inline-block"
-      id="input-checkout-command"
-      readonly
-    />
-    <button type="button" id="button-checkout-command" class="btn flex-self-end" data-toggle="tooltip" data-placement="top" title="Copy branch checkout command into clipboard">
-      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14"><path fill-rule="evenodd" d="M5.75 1a.75.75 0 00-.75.75v3c0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75v-3a.75.75 0 00-.75-.75h-4.5zm.75 3V2.5h3V4h-3zm-2.874-.467a.75.75 0 00-.752-1.298A1.75 1.75 0 002 3.75v9.5c0 .966.784 1.75 1.75 1.75h8.5A1.75 1.75 0 0014 13.25v-9.5a1.75 1.75 0 00-.874-1.515.75.75 0 10-.752 1.298.25.25 0 01.126.217v9.5a.25.25 0 01-.25.25h-8.5a.25.25 0 01-.25-.25v-9.5a.25.25 0 01.126-.217z"/></svg>
-    </button>
-    <div class="text-muted" id="hint-checkout-command" style="visibility: hidden;"><small>Copied to clipboard</small></div>
-  </div>
-  `;
-    $main.prepend($commandForm);
-    const $button = document
-      .querySelector("button#button-checkout-command")
-      .addEventListener("click", () => {
-        const copyText = document.getElementById("input-checkout-command");
-        copyText.select();
-        copyText.setSelectionRange(0, 99999);
-        document.execCommand("copy");
-        document.querySelector("div#hint-checkout-command").style.visibility =
-          "visible";
-        setTimeout(() => {
+    if (!window.location.pathname.includes("projects")) {
+      const $main = document.querySelector("main");
+      const $commandForm = document.createElement("div");
+      $commandForm.innerHTML = `<div class="float-right pull-right p-3">
+      <input
+        type="text"
+        name="input-checkout-command"
+        value="git fetch && git checkout ${branchId}"
+        class="form-control d-inline-block"
+        id="input-checkout-command"
+        readonly
+      />
+      <button type="button" id="button-checkout-command" class="btn flex-self-end" data-toggle="tooltip" data-placement="top" title="Copy branch checkout command into clipboard">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14"><path fill-rule="evenodd" d="M5.75 1a.75.75 0 00-.75.75v3c0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75v-3a.75.75 0 00-.75-.75h-4.5zm.75 3V2.5h3V4h-3zm-2.874-.467a.75.75 0 00-.752-1.298A1.75 1.75 0 002 3.75v9.5c0 .966.784 1.75 1.75 1.75h8.5A1.75 1.75 0 0014 13.25v-9.5a1.75 1.75 0 00-.874-1.515.75.75 0 10-.752 1.298.25.25 0 01.126.217v9.5a.25.25 0 01-.25.25h-8.5a.25.25 0 01-.25-.25v-9.5a.25.25 0 01.126-.217z"/></svg>
+      </button>
+      <div class="text-muted" id="hint-checkout-command" style="visibility: hidden;"><small>Copied to clipboard</small></div>
+    </div>
+    `;
+      $main.prepend($commandForm);
+      const $button = document
+        .querySelector("button#button-checkout-command")
+        .addEventListener("click", () => {
+          const copyText = document.getElementById("input-checkout-command");
+          copyText.select();
+          copyText.setSelectionRange(0, 99999);
+          document.execCommand("copy");
           document.querySelector("div#hint-checkout-command").style.visibility =
-            "hidden";
-        }, 2000);
-      });
-  }
+            "visible";
+          setTimeout(() => {
+            document.querySelector("div#hint-checkout-command").style.visibility =
+              "hidden";
+          }, 2000);
+        });
+    }
+}
 })();
