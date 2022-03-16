@@ -3,7 +3,7 @@
 // @name         Github - Create branch from issue
 // @namespace    http://tampermonkey.net/
 // @source       https://github.com/bumbeishvili/create-branch-from-issue
-// @version      0.1
+// @version      0.2
 // @description  Creating same named branch from github issue
 // @match        https://github.com/*
 // @grant        none
@@ -25,15 +25,31 @@ function stringToSlug(str) {
 (function () {
   'use strict';
   // If not header actions element presented, return since this is not an issue
-  if (!document.querySelector('.gh-header-actions')) return;
+  const $headerActions = document.querySelector('.gh-header-actions');
+  if (!$headerActions) return;
   const $loadingIndicator = document.createElement('div');
-  $loadingIndicator.innerHTML = `<span id="span-issue-loading-branches" class="mr-1">Loading branches...</span>
-  `;
+  $loadingIndicator.classList.add('flex-1');
+  $loadingIndicator.innerHTML = `<span id="span-issue-loading-branches" class="mr-1">Loading branches...</span>`;
+
   const $button = document.createElement('div');
+  $button.classList.add('flex-grow-0');
   $button.innerHTML =
       '<button id="create_branch_button" style="margin-right:10px!important;background-color:#0C61FE" class="d-inline-block float-none m-0 mr-md-0 btn btn-sm btn-primary ">Create Branch From This Issue</button>';
-  document.querySelector('.gh-header-actions').prepend($button);
-  document.querySelector('.gh-header-actions').prepend($loadingIndicator);
+
+  const $builtInCreateIssueBtn = $headerActions.querySelector('a.btn.btn-primary');
+  if ($builtInCreateIssueBtn) {
+      $builtInCreateIssueBtn.classList.add('flex-grow-0');
+  }
+
+  $headerActions.classList.add('flex-content-start', 'flex-justify-end', 'flex-wrap');
+  $headerActions.classList.remove('flex-shrink-0');
+  $headerActions.style.minWidth = 'max-content';
+
+  $headerActions.prepend($button);
+  const $lineBreaker = document.createElement('div');
+  $lineBreaker.style.flexBasis = '100%';
+  $headerActions.append($lineBreaker);
+  $headerActions.append($loadingIndicator);
   // Define branch list and base branch
   const repoUrl = window.location.href.split('issues')[0];
   // Update branch lists
@@ -51,12 +67,12 @@ function stringToSlug(str) {
               options.push(`<option value="${branch}">${branch}</option>`)
           })
           const $dropdown = document.createElement('div');
-          $dropdown.innerHTML = `Source branch:
-            <select class="form-control mr-1" id="dropdown-issue-all-branches">
+          $dropdown.innerHTML = `<label for="bumbeishvili-source-branch">Source branch:</label>
+            <select id="bumbeishvili-source-branch" class="form-control mr-1" style="max-width: 0;min-width:100%;" id="dropdown-issue-all-branches">
                 ${options}
             </select>
           `
-          document.querySelector('.gh-header-actions').prepend($dropdown); // Adds the branches dropdown into the DOM
+          $loadingIndicator.prepend($dropdown); // Adds the branches dropdown into the DOM
           document.getElementById("span-issue-loading-branches").outerHTML = ""; // Removes the loading indicator from the DOM
       });
   // Attach event to button
@@ -86,7 +102,7 @@ function stringToSlug(str) {
   });
 })();
 
-// Feature: Copy branch checkout command into clipboard 
+// Feature: Copy branch checkout command into clipboard
 (function () {
   console.log(location);
   console.log(window.location.origin + window.location.pathname);
